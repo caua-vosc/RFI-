@@ -71,11 +71,6 @@ textarea {
   color: gray;
 }
 
-button {
-  display: inline-block;
-  margin: 5px;
-}
-
 button❌ {
   background-color: red;
 }
