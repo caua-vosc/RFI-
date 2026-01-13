@@ -10,6 +10,10 @@
 
   <h1>📸 Relatório de Fotos do Site</h1>
 
+  <!-- Botão para ativar o modo Admin -->
+  <button id="adminButton" onclick="loginAdmin()">Modo Administrador</button>
+
+  <!-- Formulário de envio de fotos e legendas -->
   <form id="uploadForm">
     <label>📍 ID do Site (obrigatório)</label>
     <input type="text" id="siteId" required placeholder="Ex: SITE_123">
@@ -20,6 +24,13 @@
   </form>
 
   <div id="status"></div>
+
+  <!-- Painel Admin -->
+  <div id="adminPanel" style="display: none;">
+    <h3>Área de Administração</h3>
+    <textarea id="sectionsText" placeholder="Adicione ou edite as seções, uma por linha"></textarea>
+    <button onclick="saveSections()">Salvar Seções</button>
+  </div>
 
   <script src="script.js"></script>
 
