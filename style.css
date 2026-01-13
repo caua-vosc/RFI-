@@ -44,9 +44,16 @@ button:hover {
 
 .preview img {
   max-width: 100px;
+  max-height: 100px;
   margin: 5px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  object-fit: cover; /* Para manter as imagens dentro do tamanho */
+}
+
+.preview {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 #adminPanel {
@@ -59,6 +66,16 @@ textarea {
   resize: vertical;
 }
 
-button:hover {
-  background-color: #0056b3;
+.contador {
+  font-size: 14px;
+  color: gray;
+}
+
+button {
+  display: inline-block;
+  margin: 5px;
+}
+
+button❌ {
+  background-color: red;
 }
