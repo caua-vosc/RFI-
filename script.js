@@ -33,7 +33,7 @@ function renderSections() {
     div.innerHTML = `
       <h3>Seção ${i + 1}: ${section}</h3>
       <textarea name="text_${i}" placeholder="Observação..." required></textarea>
-      <input type="file" name="photos_${i}" accept="image/*" capture="camera" onchange="previewImage(event, ${i})"/>
+      <input type="file" name="photos_${i}" accept="image/*" capture="camera" onchange="previewImage(event, ${i})" multiple />
       <div class="preview" id="preview_${i}"></div>
       <div class="contador" id="counter_${i}"></div>
     `;
@@ -45,15 +45,15 @@ function renderSections() {
 
 // Função para exibir a foto que foi tirada ou anexada
 function previewImage(event, idx) {
-  const file = event.target.files[0];
+  const files = event.target.files;
   const previewDiv = document.getElementById(`preview_${idx}`);
 
-  if (state[idx] && state[idx].length >= 10) {
+  if (state[idx] && state[idx].length + files.length > 10) {
     alert('Limite de 10 fotos atingido para esta seção!');
     return; // Não permite adicionar mais de 10 fotos
   }
 
-  if (file) {
+  Array.from(files).forEach((file) => {
     const reader = new FileReader();
     reader.onload = function(e) {
       const img = document.createElement("img");
@@ -73,7 +73,7 @@ function previewImage(event, idx) {
       updateCounter(idx);
     };
     reader.readAsDataURL(file);
-  }
+  });
 }
 
 // Função para excluir a foto
