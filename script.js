@@ -26,6 +26,7 @@ const adminPassword = "Nova@123";  // Senha do administrador
 
 // Função para renderizar as seções no frontend
 function renderSections() {
+  sectionsDiv.innerHTML = ""; // Limpa as seções antes de renderizar novamente
   sections.forEach((section, i) => {
     const div = document.createElement("div");
     div.className = "section";
@@ -35,11 +36,10 @@ function renderSections() {
       <textarea name="text_${i}" placeholder="Observação..." required></textarea>
       <input type="file" name="photos_${i}" accept="image/*" capture="camera" onchange="previewImage(event, ${i})" multiple />
       <div class="preview" id="preview_${i}"></div>
-      <div class="contador" id="counter_${i}"></div>
+      <div class="contador" id="counter_${i}">Fotos: 0 / 10</div>
     `;
 
     sectionsDiv.appendChild(div);
-    renderImages(i); // Renderiza as imagens inicialmente
   });
 }
 
