@@ -1,5 +1,5 @@
 const sectionsDiv = document.getElementById("sections");
-let state = {};
+let state = {}; // Armazena as fotos para cada seção
 let sections = [
   "FRENTE SITE",
   "PORTÃO DE ACESSO - FRENTE",
@@ -20,7 +20,7 @@ let sections = [
   "ESTEIRAMENTO HORIZONTAL",
   "ATERRAMENTO - ESTEIRAMENTO HORIZONTAL",
   "FOTO GERAIS - SITE FINALIZADO"
-]; // As 20 seções que o usuário verá
+];
 
 const adminPassword = "Nova@123";  // Senha do administrador
 
@@ -35,26 +35,60 @@ function renderSections() {
       <textarea name="text_${i}" placeholder="Observação..." required></textarea>
       <input type="file" name="photos_${i}" accept="image/*" capture="camera" onchange="previewImage(event, ${i})"/>
       <div class="preview" id="preview_${i}"></div>
+      <div class="contador" id="counter_${i}"></div>
     `;
 
     sectionsDiv.appendChild(div);
+    renderImages(i); // Renderiza as imagens inicialmente
   });
 }
 
 // Função para exibir a foto que foi tirada ou anexada
 function previewImage(event, idx) {
   const file = event.target.files[0];
+  const previewDiv = document.getElementById(`preview_${idx}`);
+
+  if (state[idx] && state[idx].length >= 10) {
+    alert('Limite de 10 fotos atingido para esta seção!');
+    return; // Não permite adicionar mais de 10 fotos
+  }
+
   if (file) {
     const reader = new FileReader();
     reader.onload = function(e) {
       const img = document.createElement("img");
       img.src = e.target.result;
-      document.getElementById(`preview_${idx}`).innerHTML = "";
-      document.getElementById(`preview_${idx}`).appendChild(img);
-      state[idx] = file;
+      img.className = 'preview-image'; // Class para controlar o tamanho das imagens
+      const removeButton = document.createElement("button");
+      removeButton.textContent = "❌ Excluir";
+      removeButton.onclick = () => removeImage(idx, img);
+
+      previewDiv.appendChild(img);
+      previewDiv.appendChild(removeButton);
+
+      if (!state[idx]) {
+        state[idx] = [];
+      }
+      state[idx].push(file);
+      updateCounter(idx);
     };
     reader.readAsDataURL(file);
   }
+}
+
+// Função para excluir a foto
+function removeImage(idx, imgElement) {
+  const imgIndex = Array.from(imgElement.parentNode.children).indexOf(imgElement);
+  state[idx].splice(imgIndex, 1); // Remove a foto do estado
+  imgElement.parentNode.removeChild(imgElement); // Remove a imagem da visualização
+  imgElement.parentNode.removeChild(imgElement.nextSibling); // Remove o botão de exclusão
+  updateCounter(idx); // Atualiza o contador de fotos
+}
+
+// Função para atualizar o contador de fotos
+function updateCounter(idx) {
+  const counter = document.getElementById(`counter_${idx}`);
+  counter.innerText = `Fotos: ${state[idx] ? state[idx].length : 0} / 10`;
 }
 
 // Função de login do admin
